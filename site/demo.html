@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atbilde24 — dzīvais demo</title>
+<style>
+  :root{--navy:#0c1b2e;--acc:#0e7c66;--acc2:#0a614f;--gold:#e8a13c;--bg:#eef2f7;--line:#dde5ee}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:var(--bg);min-height:100vh;display:flex;flex-direction:column;align-items:center}
+  .top{width:100%;background:var(--navy);color:#fff;padding:14px 18px;text-align:center;font-size:.92rem}
+  .top a{color:var(--gold);text-decoration:none;font-weight:700}
+  .switch{margin:18px 0 6px;display:flex;gap:10px}
+  .switch button{padding:9px 18px;border-radius:99px;border:1px solid var(--line);background:#fff;cursor:pointer;font-weight:600;font-size:.9rem}
+  .switch button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .hint{font-size:.83rem;color:#64748b;margin-bottom:12px;text-align:center;padding:0 16px}
+  /* PHONE */
+  .phone{width:min(420px,94vw);background:#fff;border-radius:22px;box-shadow:0 18px 50px rgba(12,27,46,.22);overflow:hidden;display:flex;flex-direction:column;height:min(640px,72vh);min-height:480px}
+  .head{background:var(--acc);color:#fff;padding:14px 16px;display:flex;align-items:center;gap:12px}
+  .ava{width:38px;height:38px;border-radius:50%;background:#fff;color:var(--acc);display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+  .head .nm{font-weight:700;font-size:.98rem}
+  .head .st{font-size:.76rem;opacity:.9}.head .st::before{content:"● ";color:#7df0c8}
+  #chat{flex:1;overflow-y:auto;padding:16px;background:#f7fafc;display:flex;flex-direction:column;gap:10px}
+  .msg{max-width:82%;padding:10px 14px;border-radius:16px;font-size:.93rem;line-height:1.45;white-space:pre-line;animation:pop .18s ease}
+  @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .bot{background:#fff;border:1px solid var(--line);border-bottom-left-radius:4px;align-self:flex-start}
+  .usr{background:var(--acc);color:#fff;border-bottom-right-radius:4px;align-self:flex-end}
+  .lead{align-self:stretch;background:#fff8ec;border:1px dashed var(--gold);border-radius:12px;padding:12px 14px;font-size:.83rem;color:#7a5b1e}
+  .typing{align-self:flex-start;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 16px}
+  .typing i{display:inline-block;width:6px;height:6px;border-radius:50%;background:#9fb1c1;margin:0 2px;animation:bl 1s infinite}
+  .typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+  @keyframes bl{0%,100%{opacity:.3}50%{opacity:1}}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;padding:10px 14px;border-top:1px solid var(--line);background:#fff}
+  .chip{padding:7px 13px;border-radius:99px;border:1px solid var(--acc);color:var(--acc);background:#fff;font-size:.82rem;cursor:pointer}
+  .chip:hover{background:var(--acc);color:#fff}
+  .inrow{display:flex;gap:8px;padding:10px 14px 14px;background:#fff}
+  .inrow input{flex:1;padding:12px 14px;border:1px solid var(--line);border-radius:99px;font-size:.95rem;outline:none}
+  .inrow button{width:46px;height:46px;border-radius:50%;border:none;background:var(--acc);color:#fff;font-size:1.1rem;cursor:pointer}
+  .cta{margin:22px 0 34px;text-align:center;padding:0 16px}
+  .cta a{display:inline-block;background:var(--navy);color:#fff;padding:13px 26px;border-radius:10px;text-decoration:none;font-weight:700}
+  .cta p{font-size:.85rem;color:#64748b;margin-top:8px}
+</style>
+</head>
+<body>
+
+<div class="top">🧪 Šis ir <strong>Atbilde24 demo</strong> ar izdomātu uzņēmumu — šādu asistentu mēs izveidosim <a href="index.html#kontakti">jūsu biznesam</a> ar jūsu cenām un pakalpojumiem.</div>
+
+<div class="switch">
+  <button id="bDent" class="on" onclick="setProfile('dent')">🦷 Zobārstniecība “Smaids”</button>
+  <button id="bAuto" onclick="setProfile('auto')">🔧 Autoserviss “Meistars”</button>
+</div>
+<div class="hint">Rakstiet jebko, ko jautātu īsts klients — vai spiediet uz gatavajiem jautājumiem.</div>
+
+<div class="phone">
+  <div class="head"><div class="ava" id="hIco">🦷</div><div><div class="nm" id="hName">Smaids — virtuālais asistents</div><div class="st">tiešsaistē · atbild uzreiz</div></div></div>
+  <div id="chat"></div>
+  <div class="chips" id="chips"></div>
+  <div class="inrow"><input id="inp" placeholder="Rakstiet ziņu..." autocomplete="off"><button onclick="send()">➤</button></div>
+</div>
+
+<div class="cta">
+  <a href="index.html#kontakti">Vēlos šādu asistentu savam uzņēmumam →</a>
+  <p>Uzstādīšana 5 darba dienās · no €97/mēn · 14 dienu garantija</p>
+</div>
+
+<script>
+const PROFILES = {
+ dent: {
+  ico:"🦷", name:"Smaids — virtuālais asistents",
+  hello:"Labdien! 👋 Esmu zobārstniecības klīnikas “Smaids” virtuālais asistents. Varu pastāstīt par pakalpojumiem, cenām un darba laikiem vai pieteikt vizīti. Kā varu palīdzēt?",
+  chips:["Cik maksā higiēna?","Darba laiki","Pieteikt vizīti","Vai pieņemat bērnus?"],
+  rules:[
+   {k:["higien","tīrīšan","akmens"], a:"Profesionālā zobu higiēna maksā €45 (ilgums ~50 min). Šomēnes jaunajiem pacientiem higiēna + ārsta apskate kopā ir €55. 😊 Vai vēlaties pieteikt vizīti?"},
+   {k:["plomb","caurum","labošan"], a:"Zoba plombēšana maksā no €60 līdz €110 atkarībā no apjoma — precīzu cenu ārsts pateiks pēc apskates (apskate €25, to atskaita no remonta cenas). Vai pieteikt jūs konsultācijai?"},
+   {k:["balināšan","baltāk"], a:"Zobu balināšana ar lampu maksā €180, ilgums ~1 h. Pirms tam ieteicama higiēna (€45). Varu pieteikt jūs abiem vienā reizē — vēlaties?"},
+   {k:["implant","protez","kron"], a:"Implantus un kronīšus liekam — cena atkarīga no situācijas, tāpēc pirmais solis ir konsultācija ar 3D uzņēmumu (€40). Vai pieteikt jūs konsultācijai?"},
+   {k:["cik maksā","cena","cenas","izmaks"], a:"Populārākās cenas: higiēna €45, ārsta apskate €25, plombēšana no €60, balināšana €180, bērnu apskate €20. Par ko pastāstīt sīkāk?"},
+   {k:["darba laik","cikos","strādā","atvērt","brīvdien","sestdien","svētdien"], a:"Strādājam: P–Pk 9:00–19:00, Se 10:00–15:00, svētdien — brīvs. 🕘 Vai vēlaties pieteikt vizīti?"},
+   {k:["kur","adres","atrod","piebrauk","stāvviet"], a:"Esam Rīgā, Brīvības ielā 123 (2. stāvs). Pie ēkas ir bezmaksas stāvvieta klientiem; 11. trolejbusa pietura “Brīvības iela” ir 1 min attālumā. 📍"},
+   {k:["bērn","bern"], a:"Jā, pieņemam arī bērnus! 👶 Bērnu apskate maksā €20, un mūsu ārstes māk atrast pieeju arī pašiem bailīgākajiem. Vai pieteikt vizīti?"},
+   {k:["sāp","sap","akūt","steidzam"], a:"Ja jums šobrīd stipras sāpes — akūtiem pacientiem cenšamies atrast laiku tajā pašā dienā! Lūdzu, zvaniet uzreiz: +371 67 000 000, vai atstājiet savu numuru šeit, un mēs atzvanīsim 15 minūšu laikā. Kā jūs sauc?", lead:true},
+   {k:["apdrošināšan","polise"], a:"Jā, strādājam ar lielāko apdrošinātāju polisēm (BTA, Balta, Gjensidige u.c.). Paņemiet polisi līdzi uz vizīti — pārējo nokārtosim mēs. Vai pieteikt vizīti?"},
+   {k:["krievisk","по-русски","русск"], a:"Конечно! Я отвечаю и по-русски: гигиена — €45, осмотр — €25, работаем Пн–Пт 9:00–19:00, Сб 10:00–15:00. Хотите записаться на приём?"},
+   {k:["english","price"], a:"Of course! I also speak English: dental hygiene is €45, check-up €25. Open Mon–Fri 9:00–19:00, Sat 10:00–15:00. Would you like to book a visit?"}
+  ],
+  lead_q:"Jauki! Pierakstīšu jūs. Kā jūs sauc? 🙂",
+  book:["piera","pieteik","vizīt","vizit","apmeklē","gribu uz","rezerv","laiku pie"]
+ },
+ auto: {
+  ico:"🔧", name:"Meistars — virtuālais asistents",
+  hello:"Sveiki! 👋 Esmu autoservisa “Meistars” virtuālais asistents. Varu pastāstīt par cenām un brīvajiem laikiem vai pierakstīt jūsu auto uz servisu. Ar ko varu palīdzēt?",
+  chips:["Riepu maiņas cena","Brīvie laiki rīt","Pieteikt auto","Eļļas maiņa"],
+  rules:[
+   {k:["riep","balansēšan"], a:"Riepu maiņa ar balansēšanu: R16 — €35, R17 — €40, R18+ — €45 (komplekts, ~40 min). Riepu glabāšana sezonai +€30. Vai pierakstīt jūsu auto? 🚗"},
+   {k:["eļļ","ell","filtr"], a:"Eļļas un filtra maiņa maksā no €45 + materiāli (eļļu varat ņemt savu vai mūsu — palīdzēsim izvēlēties pēc auto modeļa). Ilgums ~30 min. Pierakstīt?"},
+   {k:["diagnost","lampiņ","check","kļūd"], a:"Datordiagnostika maksā €30 — nolasām kļūdas, izskaidrojam cilvēku valodā un pasakām remonta cenu pirms darbu sākšanas. Ja remontu darāt pie mums, diagnostika bez maksas. Pierakstīt?"},
+   {k:["bremž","bremz","kluč"], a:"Bremžu kluču maiņa no €60 + detaļas (piemeklējam pēc VIN). Diski + kluči priekšā tipiski €150–250 ar darbu. Atsūtiet auto marku un gadu — pateiksim precīzāk, vai pierakstu uzreiz?"},
+   {k:["cik maksā","cena","cenas","izmaks"], a:"Biežākās cenas: riepu maiņa no €35, eļļas maiņa no €45, diagnostika €30, bremžu kluči no €60, tehniskās apskates sagatavošana €25. Par ko pastāstīt vairāk?"},
+   {k:["darba laik","cikos","strādā","atvērt","brīvdien","sestdien"], a:"Strādājam P–Pk 8:30–18:00, Se 9:00–14:00. Sezonas laikā (riepu maiņa) arī svētdienās pēc pieraksta. Vai atrast jums laiku?"},
+   {k:["kur","adres","atrod"], a:"Esam Rīgā, Krasta ielā 50 (iebraukšana no sētas puses). Gaidīšanas zonā ir kafija un WiFi. ☕ Pierakstīt jūsu auto?"},
+   {k:["rīt","šodien","brīvi","brīvie","laiki","tuvāk"], a:"Tuvākie brīvie laiki parasti ir 1–2 dienu laikā; rīta laiki aizpildās ātrāk. Atstājiet vārdu un numuru — kolēģi atzvanīs un piedāvās konkrētus laikus. Kā jūs sauc?", lead:true},
+   {k:["tehnisk","apskat","TA "], a:"Sagatavojam auto tehniskajai apskatei (pārbaude + sīkie labojumi) — €25 par pārbaudi, darbi pēc saraksta ar jūsu apstiprinājumu. Pierakstīt?"},
+   {k:["по-русски","русск"], a:"Конечно! Замена шин от €35, замена масла от €45, диагностика €30. Работаем Пн–Пт 8:30–18:00, Сб 9:00–14:00. Записать вашу машину?"},
+   {k:["english"], a:"Sure! Tyre change from €35, oil change from €45, diagnostics €30. Open Mon–Fri 8:30–18:00, Sat 9:00–14:00. Want to book a slot?"}
+  ],
+  lead_q:"Labi, pierakstīsim! Kā jūs sauc? 🙂",
+  book:["piera","pieteik","rezerv","gribu uz","laiku","atbrauk"]
+ }
+};
+
+let P = PROFILES.dent, state = "chat", leadName = "";
+const chat = document.getElementById("chat"), chips = document.getElementById("chips"), inp = document.getElementById("inp");
+
+function setProfile(id){
+  P = PROFILES[id]; state="chat"; leadName="";
+  document.getElementById("bDent").classList.toggle("on", id==="dent");
+  document.getElementById("bAuto").classList.toggle("on", id==="auto");
+  document.getElementById("hIco").textContent = P.ico;
+  document.getElementById("hName").textContent = P.name;
+  chat.innerHTML=""; renderChips();
+  botSay(P.hello);
+}
+function renderChips(){
+  chips.innerHTML="";
+  P.chips.forEach(c=>{const b=document.createElement("button");b.className="chip";b.textContent=c;
+    b.onclick=()=>{inp.value=c;send();};chips.appendChild(b);});
+}
+function add(cls, text){
+  const d=document.createElement("div");d.className="msg "+cls;d.textContent=text;
+  chat.appendChild(d);chat.scrollTop=chat.scrollHeight;return d;
+}
+function botSay(text, after){
+  const t=document.createElement("div");t.className="typing";t.innerHTML="<i></i><i></i><i></i>";
+  chat.appendChild(t);chat.scrollTop=chat.scrollHeight;
+  setTimeout(()=>{t.remove();add("bot",text);if(after)after();}, 500+Math.random()*500);
+}
+function showLeadCard(name, phone){
+  setTimeout(()=>{
+    const d=document.createElement("div");d.className="msg lead";
+    d.innerHTML="📥 <strong>Šādu ziņu šobrīd saņemtu uzņēmuma īpašnieks e-pastā:</strong><br>"+
+      "Jauns pieteikums no čata · Vārds: "+name+" · Tālrunis: "+phone+
+      " · Laiks: "+new Date().toLocaleString("lv-LV")+"<br><em>(Demo režīmā nekas nekur netiek sūtīts.)</em>";
+    chat.appendChild(d);chat.scrollTop=chat.scrollHeight;
+  }, 1300);
+}
+function answer(q){
+  const s=q.toLowerCase();
+  if(P.book.some(k=>s.includes(k))){state="name";return P.lead_q;}
+  for(const r of P.rules){ if(r.k.some(k=>s.includes(k.toLowerCase()))){ if(r.lead)state="name"; return r.a; } }
+  state="name";
+  return "Labs jautājums! Šo gan precizēšu pie kolēģiem, lai neko nesajauktu. 🙏 Atstājiet, lūdzu, savu vārdu un tālruni — atbildēsim jums personīgi. Kā jūs sauc?";
+}
+function send(){
+  const q=inp.value.trim(); if(!q)return; inp.value="";
+  add("usr",q);
+  if(state==="name"){ leadName=q.replace(/[^\p{L}\s-]/gu,"").trim()||"klients"; state="phone";
+    botSay("Paldies, "+leadName+"! Un jūsu tālruņa numurs? 📞"); return; }
+  if(state==="phone"){ const ph=q; state="chat";
+    botSay("Lieliski, "+leadName+"! ✅ Jūsu pieteikums ir saņemts — mēs ar jums sazināsimies tuvākajā laikā, lai apstiprinātu laiku. Vai varu palīdzēt ar vēl kaut ko?");
+    showLeadCard(leadName, ph); return; }
+  botSay(answer(q));
+}
+inp.addEventListener("keydown",e=>{if(e.key==="Enter")send();});
+setProfile("dent");
+</script>
+</body>
+</html>

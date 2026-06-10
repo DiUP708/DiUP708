@@ -1,0 +1,3 @@
+# Atteikumu saraksts (suppression list).
+# Viena e-pasta adrese rindā. Ja kāds atbild "STOP" vai lūdz nerakstīt/nezvanīt —
+# adrese nonāk šeit UZREIZ un paliek mūžīgi. Skripti šīs adreses nekad neizmanto.

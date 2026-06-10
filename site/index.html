@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atbilde24 — AI klientu asistents jūsu uzņēmumam, 24/7</title>
+<meta name="description" content="AI asistents, kas atbild jūsu klientiem mājaslapā un WhatsApp 24/7 latviski, krieviski un angliski. Pieraksta vizītes un savāc kontaktus, kamēr jūs strādājat vai atpūšaties.">
+<style>
+  :root{
+    --navy:#0c1b2e; --navy2:#13283f; --ink:#1d2b3a; --mut:#5b6b7c;
+    --bg:#f6f8fb; --card:#ffffff; --acc:#0e7c66; --acc2:#0a614f; --gold:#e8a13c;
+    --line:#e3e9f0; --r:14px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:Georgia,'Times New Roman',serif;color:var(--ink);background:var(--bg);line-height:1.6}
+  h1,h2,h3,.btn,nav,.tag,.price,.chip{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif}
+  a{color:var(--acc);text-decoration:none}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 20px}
+  /* NAV */
+  nav{position:sticky;top:0;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:50}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:62px}
+  .logo{font-weight:800;font-size:1.25rem;color:var(--navy)}
+  .logo span{color:var(--acc)}
+  .nav-links{display:flex;gap:22px;align-items:center;font-size:.95rem}
+  .nav-links a{color:var(--ink)}
+  .btn{display:inline-block;padding:12px 22px;border-radius:10px;font-weight:700;font-size:1rem;cursor:pointer;border:none;transition:.15s}
+  .btn-p{background:var(--acc);color:#fff}.btn-p:hover{background:var(--acc2)}
+  .btn-o{background:#fff;color:var(--navy);border:2px solid var(--navy)}
+  .btn-o:hover{background:var(--navy);color:#fff}
+  /* HERO */
+  header{background:linear-gradient(160deg,var(--navy) 0%,var(--navy2) 70%);color:#fff;padding:84px 0 90px}
+  .tag{display:inline-block;background:rgba(232,161,60,.15);color:var(--gold);border:1px solid rgba(232,161,60,.4);padding:5px 14px;border-radius:99px;font-size:.85rem;font-weight:600;margin-bottom:22px}
+  header h1{font-size:clamp(1.9rem,4.6vw,3.1rem);line-height:1.15;max-width:760px;font-weight:800}
+  header h1 em{color:var(--gold);font-style:italic;font-family:Georgia,serif}
+  header p{margin:22px 0 32px;font-size:1.15rem;color:#c8d4e0;max-width:640px}
+  .hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+  .hero-note{margin-top:18px;font-size:.9rem;color:#8fa3b8}
+  /* SECTIONS */
+  section{padding:72px 0}
+  .sec-h{text-align:center;max-width:680px;margin:0 auto 46px}
+  .sec-h h2{font-size:clamp(1.5rem,3vw,2.1rem);color:var(--navy);font-weight:800}
+  .sec-h p{color:var(--mut);margin-top:10px}
+  .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:26px}
+  .card .ico{font-size:1.7rem}
+  .card h3{margin:12px 0 8px;color:var(--navy);font-size:1.06rem}
+  .card p{color:var(--mut);font-size:.96rem}
+  .step-n{display:inline-flex;width:34px;height:34px;border-radius:50%;background:var(--acc);color:#fff;align-items:center;justify-content:center;font-weight:800;font-family:Arial}
+  /* PRICING */
+  .plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;align-items:stretch}
+  .plan{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:30px;display:flex;flex-direction:column}
+  .plan.hot{border:2px solid var(--acc);position:relative}
+  .plan.hot::before{content:"Populārākā izvēle";position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--acc);color:#fff;font-size:.75rem;font-weight:700;padding:3px 14px;border-radius:99px;font-family:Arial}
+  .plan h3{color:var(--navy);font-size:1.15rem}
+  .price{font-size:2rem;font-weight:800;color:var(--navy);margin:14px 0 2px}
+  .price small{font-size:.95rem;color:var(--mut);font-weight:400}
+  .setup{font-size:.88rem;color:var(--mut);margin-bottom:18px}
+  .plan ul{list-style:none;flex:1;margin-bottom:22px}
+  .plan li{padding:7px 0;font-size:.93rem;border-bottom:1px dashed var(--line);font-family:Arial,sans-serif}
+  .plan li::before{content:"✓ ";color:var(--acc);font-weight:700}
+  .plan li.no{color:#aab6c2}.plan li.no::before{content:"– ";color:#ccd5dd}
+  .guarantee{margin-top:30px;text-align:center;background:#eef7f4;border:1px solid #cde8e0;border-radius:var(--r);padding:18px;font-size:.98rem}
+  /* FAQ */
+  details{background:#fff;border:1px solid var(--line);border-radius:10px;margin-bottom:10px;padding:16px 20px}
+  summary{cursor:pointer;font-weight:700;color:var(--navy);font-family:Arial,sans-serif;font-size:.98rem}
+  details p{margin-top:10px;color:var(--mut);font-size:.95rem}
+  /* CONTACT */
+  .contact-box{display:grid;grid-template-columns:1fr 1fr;gap:34px;background:var(--navy);border-radius:var(--r);padding:42px;color:#fff}
+  .contact-box h2{font-size:1.6rem;margin-bottom:12px}
+  .contact-box p{color:#c8d4e0;font-size:.97rem;margin-bottom:16px}
+  .cline{margin:8px 0;font-size:1.02rem}
+  .cline a{color:var(--gold)}
+  form label{display:block;font-size:.85rem;margin:12px 0 4px;color:#c8d4e0;font-family:Arial}
+  form input,form textarea{width:100%;padding:11px;border-radius:8px;border:1px solid #2c3f57;background:#10233a;color:#fff;font-size:.95rem;font-family:Arial}
+  form button{margin-top:16px;width:100%}
+  footer{padding:34px 0;text-align:center;color:var(--mut);font-size:.85rem}
+  @media(max-width:760px){.contact-box{grid-template-columns:1fr}.nav-links a:not(.btn){display:none}}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap nav-in">
+  <div class="logo">Atbilde<span>24</span></div>
+  <div class="nav-links">
+    <a href="#ka-strada">Kā strādā</a><a href="#cenas">Cenas</a><a href="#buj">BUJ</a>
+    <a href="demo.html" class="btn btn-p" style="padding:9px 18px">Izmēģināt demo</a>
+  </div>
+</div></nav>
+
+<header><div class="wrap">
+  <span class="tag">Latviski · Krieviski · Angliski</span>
+  <h1>Jūsu uzņēmums atbild klientiem <em>arī pulksten 23:40</em> — kamēr jūs atpūšaties.</h1>
+  <p>Atbilde24 ir AI asistents jūsu mājaslapā, WhatsApp un sociālajos tīklos: tas 10 sekundēs
+  atbild uz klientu jautājumiem, piesaka vizītes un no rīta jums e-pastā atstāj gatavus
+  klientu kontaktus. Bez brīvdienām, bez slimības lapām.</p>
+  <div class="hero-btns">
+    <a class="btn btn-p" href="demo.html">▶ Izmēģināt dzīvu demo (2 min)</a>
+    <a class="btn btn-o" style="border-color:#fff;color:#fff;background:transparent" href="#kontakti">Sazināties</a>
+  </div>
+  <div class="hero-note">Uzstādīšana 5 darba dienās · 14 dienu naudas atgriešanas garantija · bez gada līguma</div>
+</div></header>
+
+<section><div class="wrap">
+  <div class="sec-h"><h2>Cik klientu jūs pazaudējat, kamēr neviens neatbild?</h2>
+  <p>Liela daļa zvanu un ziņu pakalpojumu uzņēmumiem ienāk vakaros un brīvdienās. Klients, kurš nesaņem atbildi, raksta nākamajam sarakstā.</p></div>
+  <div class="grid3">
+    <div class="card"><div class="ico">🌙</div><h3>Ziņas ārpus darba laika</h3><p>Cilvēki meklē zobārstu, autoservisu vai meistaru vakarā pēc darba. Tieši tad jūsu telefons klusē — un konkurenta čats atbild.</p></div>
+    <div class="card"><div class="ico">📵</div><h3>Neatbildētie zvani sezonā</h3><p>Kad rokas pilnas darba, klausuli pacelt nevar. Katrs neatbildētais zvans ir klients, kurš, visticamāk, vairs nezvanīs.</p></div>
+    <div class="card"><div class="ico">💬</div><h3>Facebook ziņas "uz vēlāk"</h3><p>"Atbildēšu vakarā" pārvēršas par "aizmirsu". Lēna atbilde sociālajos tīklos šodien nozīmē zaudētu uzticību un pasūtījumu.</p></div>
+  </div>
+</div></section>
+
+<section id="ka-strada" style="background:#fff"><div class="wrap">
+  <div class="sec-h"><h2>Kā tas strādā</h2><p>No jums — 30 minūtes sarunas. Visu pārējo izdarām mēs.</p></div>
+  <div class="grid3">
+    <div class="card"><span class="step-n">1</span><h3>Mēs iepazīstam jūsu biznesu</h3><p>Īsa saruna par jūsu pakalpojumiem, cenām un biežākajiem klientu jautājumiem. Asistents tiek apmācīts tikai uz jūsu apstiprinātās informācijas.</p></div>
+    <div class="card"><span class="step-n">2</span><h3>Uzstādām 5 darba dienās</h3><p>Čata logs jūsu mājaslapā (viena koda rinda) un, ja vēlaties, WhatsApp, Messenger un Instagram. Jūs pārbaudāt un apstiprināt atbildes pirms palaišanas.</p></div>
+    <div class="card"><span class="step-n">3</span><h3>Jūs saņemat klientus</h3><p>Asistents atbild 24/7, piesaka vizītes un savāc vārdu + tālruni. Katru rītu jūsu e-pastā — gatavi kontakti. Katru mēnesi — pārskats ar statistiku.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="sec-h"><h2>Ko asistents prot</h2></div>
+  <div class="grid3">
+    <div class="card"><div class="ico">⚡</div><h3>Atbild 10 sekundēs, 24/7</h3><p>Uz jautājumiem par cenām, darba laikiem, pakalpojumiem — uzreiz un pieklājīgi.</p></div>
+    <div class="card"><div class="ico">📅</div><h3>Piesaka vizītes</h3><p>Savāc klienta vārdu, tālruni un vēlamo laiku vai uzreiz rezervē jūsu kalendārā.</p></div>
+    <div class="card"><div class="ico">🇱🇻</div><h3>Trīs valodas</h3><p>Latviski, krieviski un angliski — automātiski tajā valodā, kurā raksta klients.</p></div>
+    <div class="card"><div class="ico">🛡️</div><h3>Neizdomā atbildes</h3><p>Ja atbildes nav zināšanu bāzē, godīgi pasaka un paņem kontaktu, nevis fantazē.</p></div>
+    <div class="card"><div class="ico">📨</div><h3>Kontakti jūsu e-pastā</h3><p>Katrs interesents ar vārdu, numuru un jautājumu nonāk pie jums — nekas nepazūd.</p></div>
+    <div class="card"><div class="ico">📊</div><h3>Mēneša pārskats</h3><p>Cik sarunu, cik kontaktu, ko klienti jautā visbiežāk — un ieteikumi, ko uzlabot.</p></div>
+  </div>
+</div></section>
+
+<section id="cenas" style="background:#fff"><div class="wrap">
+  <div class="sec-h"><h2>Cenas</h2><p>Salīdzinājumam: recepcijas darbinieks maksā no €1 200 mēnesī un strādā 8 stundas dienā.</p></div>
+  <div class="plans">
+    <div class="plan"><h3>STARTS</h3>
+      <div class="price">€97<small>/mēn</small></div><div class="setup">+ €290 uzstādīšana (vienreiz)</div>
+      <ul><li>AI čats jūsu mājaslapā</li><li>Apmācīts uz jūsu informācijas</li><li>LV / RU / EN valodas</li><li>Kontaktu savākšana + e-pasts jums</li><li class="no">WhatsApp, Messenger, Instagram</li><li class="no">Vizīšu kalendārs</li><li class="no">Mēneša pārskats</li></ul>
+      <a class="btn btn-o" href="#kontakti">Pieteikties</a></div>
+    <div class="plan hot"><h3>PRO</h3>
+      <div class="price">€167<small>/mēn</small></div><div class="setup">+ €490 uzstādīšana (vienreiz)</div>
+      <ul><li>Viss no STARTS</li><li>WhatsApp + Messenger + Instagram</li><li>Vizīšu pieteikšana (kalendārs)</li><li>Mēneša pārskats ar statistiku</li><li>Izmaiņas un papildinājumi iekļauti</li><li class="no">Vairākas filiāles</li></ul>
+      <a class="btn btn-p" href="#kontakti">Pieteikties</a></div>
+    <div class="plan"><h3>PREMIUM</h3>
+      <div class="price">€297<small>/mēn</small></div><div class="setup">+ €890 uzstādīšana (vienreiz)</div>
+      <ul><li>Viss no PRO</li><li>Vairākas filiāles / zīmoli</li><li>Nestandarta integrācijas (CRM u.c.)</li><li>Prioritārs atbalsts</li><li>Ceturkšņa attīstības plāns</li></ul>
+      <a class="btn btn-o" href="#kontakti">Pieteikties</a></div>
+  </div>
+  <div class="guarantee">🛡️ <strong>14 dienu garantija:</strong> ja pirmajās 14 dienās neredzat vērtību, atgriežam uzstādīšanas maksu. Bez gada līgumiem — varat pārtraukt jebkurā mēnesī ar 30 dienu brīdinājumu.</div>
+</div></section>
+
+<section id="buj"><div class="wrap" style="max-width:760px">
+  <div class="sec-h"><h2>Biežākie jautājumi</h2></div>
+  <details><summary>Vai asistents tiešām runā pareizā latviešu valodā?</summary><p>Jā — un tieši tas mūs atšķir no ārzemju risinājumiem. Atbildes veidojam un pārbaudām latviski, un pirms palaišanas jūs pats redzat un apstiprināt, kā asistents atbild.</p></details>
+  <details><summary>Ko asistents dara, ja nezina atbildi?</summary><p>Godīgi pasaka, ka precizēs, un palūdz klienta vārdu un tālruni. Jūs saņemat ziņu un atzvanāt. Asistents nekad neizdomā cenas vai solījumus.</p></details>
+  <details><summary>Vai man kaut kas jāprot tehniski?</summary><p>Nē. Mēs visu uzstādām paši — jūsu mājaslapā jāielīmē viena koda rinda (to varam izdarīt mēs vai jūsu izstrādātājs). No jums vajadzīga tikai informācija par jūsu pakalpojumiem.</p></details>
+  <details><summary>Cik ātri tas sāk strādāt?</summary><p>Standarta uzstādīšana — līdz 5 darba dienām no anketas aizpildīšanas.</p></details>
+  <details><summary>Kas notiek ar klientu datiem?</summary><p>Sarunas un kontakti pieder jums. Datus apstrādājam saskaņā ar GDPR, ar rakstisku datu apstrādes līgumu. <a href="privatums.html">Privātuma politika</a>.</p></details>
+  <details><summary>Vai asistents aizstās manus darbiniekus?</summary><p>Nē — tas noņem rutīnu (vieni un tie paši jautājumi, ziņas naktī) un atdod jūsu komandai laiku darbam ar klientiem klātienē. Klients, kurš grib runāt ar cilvēku, vienmēr saņem jūsu tālruni.</p></details>
+</div></section>
+
+<section id="kontakti"><div class="wrap">
+  <div class="contact-box">
+    <div>
+      <h2>Sāksim ar 2 minūšu demo</h2>
+      <p>Apskatiet <a href="demo.html" style="color:var(--gold)">dzīvo demo</a> vai atstājiet kontaktus — sagatavosim piemēru tieši ar jūsu uzņēmuma pakalpojumiem un cenām. Bez maksas un bez saistībām.</p>
+      <!-- TODO: nomaini uz saviem īstajiem kontaktiem -->
+      <div class="cline">📞 <a href="tel:+37120000000">+371 20 000 000</a></div>
+      <div class="cline">✉️ <a href="mailto:info@atbilde24.lv">info@atbilde24.lv</a></div>
+      <div class="cline">💬 <a href="https://wa.me/37120000000">WhatsApp</a></div>
+    </div>
+    <!-- TODO: reģistrējies formspree.io (bezmaksas) un nomaini TAVS_FORMSPREE_ID -->
+    <form action="https://formspree.io/f/TAVS_FORMSPREE_ID" method="POST">
+      <label>Vārds</label><input type="text" name="vards" required>
+      <label>Uzņēmums</label><input type="text" name="uznemums">
+      <label>Tālrunis vai e-pasts</label><input type="text" name="kontakts" required>
+      <label>Ko jūsu klienti jautā visbiežāk?</label><textarea name="zinojums" rows="3"></textarea>
+      <button class="btn btn-p" type="submit">Saņemt bezmaksas demo</button>
+    </form>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <!-- TODO: aizpildi savus rekvizītus -->
+  Atbilde24 · [Vārds Uzvārds / SIA], reģ. nr. [______], [adrese] ·
+  <a href="privatums.html">Privātuma politika</a> · © 2026
+</div></footer>
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+# Noslēpumi — NEKAD ne-commito
+.env
+*.key
+
+# Ģenerētie/privātie darba faili
+outreach/drafts/
+outreach/sent/
+outreach/sent_log.csv
+
+# Python
+__pycache__/
+*.pyc
+.venv/
